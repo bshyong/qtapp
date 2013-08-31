@@ -13,22 +13,22 @@
 
 ActiveRecord::Schema.define(version: 20130831153543) do
 
-  create_table "activites_users", id: false, force: true do |t|
-    t.integer  "activity_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "activites_users", ["activity_id", "user_id"], name: "index_activites_users_on_activity_id_and_user_id"
-  add_index "activites_users", ["user_id"], name: "index_activites_users_on_user_id"
-
   create_table "activities", force: true do |t|
     t.string   "name"
     t.integer  "creator_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "activities_users", id: false, force: true do |t|
+    t.integer  "activity_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities_users", ["activity_id", "user_id"], name: "index_activities_users_on_activity_id_and_user_id"
+  add_index "activities_users", ["user_id"], name: "index_activities_users_on_user_id"
 
   create_table "roles", force: true do |t|
     t.string   "name"
