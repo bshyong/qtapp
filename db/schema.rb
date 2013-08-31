@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130831151855) do
+ActiveRecord::Schema.define(version: 20130831153543) do
+
+  create_table "activites_users", id: false, force: true do |t|
+    t.integer  "activity_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activites_users", ["activity_id", "user_id"], name: "index_activites_users_on_activity_id_and_user_id"
+  add_index "activites_users", ["user_id"], name: "index_activites_users_on_user_id"
 
   create_table "activities", force: true do |t|
     t.string   "name"
@@ -30,6 +40,15 @@ ActiveRecord::Schema.define(version: 20130831151855) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], name: "index_roles_on_name"
+
+  create_table "timeblocks", force: true do |t|
+    t.datetime "starttime"
+    t.datetime "endtime"
+    t.integer  "user_id"
+    t.integer  "duration"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

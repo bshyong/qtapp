@@ -2,3 +2,8 @@
 - @users.each do |user|
   %p
     User: #{link_to user.name, user}
+
+%h3 Start Tracking
+- @activites.each do |a|
+  .panel
+    %h3 #{a.name}
