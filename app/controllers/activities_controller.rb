@@ -29,6 +29,7 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       if @activity.save
+        current_user.activities << @activity
         format.html { redirect_to @activity, notice: 'Activity was successfully created.' }
         format.json { render action: 'show', status: :created, location: @activity }
       else
@@ -70,6 +71,6 @@ class ActivitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activity_params
-      params.require(:activity).permit(:name, :creator_id)
+      params.require(:activity).permit(:name)
     end
 end
