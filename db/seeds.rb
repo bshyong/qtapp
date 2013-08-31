@@ -12,3 +12,4 @@ user.add_role :admin
 
 puts "Created ADMIN user with email: user@example.com"
 puts "and password: changeme"
+

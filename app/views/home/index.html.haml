@@ -1,6 +1,11 @@
 %h5 Seize the day!
-%table.table
-  - @activities.each do |a|
-    %tr
-      %td{:class => "color#{a.id%5}"}
-        %h3 #{a.name}
+- if @activities.present?
+  %table.table
+    - @activities.each do |a|
+      %tr
+        %td{:class => "color#{a.id%5}"}
+          %h3 #{a.name}
+- else
+  .jumbotron
+    %h5 You have no activities!
+    %button.btn.btn-primary.btn-lg.btn-block{:type => "button"} Create one now
