@@ -1,9 +1,8 @@
 = simple_form_for(@activity) do |f|
-  = f.error_notification
-
-  .form-inputs
-    = f.input :name
-    = f.input :creator_id
-
-  .form-actions
-    = f.button :submit
+  .row
+    = f.error_notification
+    .form-group
+      = f.input :name, label: false, placeholder: "Activity name", input_html: {class: "form-control input-lg"}
+  .row
+    = link_to 'Cancel', root_path, class: "btn btn-default col-xs-4"
+    = f.button :submit, class: "btn btn-primary col-xs-8"
