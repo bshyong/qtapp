@@ -1,19 +1,35 @@
-.row
-  .col-xs-12
-    %p.text-right{style: "padding-top:5px;"}
-      %a{href: new_activity_path}
-        %span.glyphicon.glyphicon-plus-sign{style: "font-size:1.4em;"}
-      %span.glyphicon.glyphicon-cog{style: "font-size:1.4em;"}
-- if @activities.present?
+- if signed_in?
   .row
-    %table.table
-      - @activities.each do |a|
+    .col-xs-12
+      %p.text-right{style: "padding-top:5px;"}
+        %a{href: new_activity_path}
+          %span.glyphicon.glyphicon-plus-sign{style: "font-size:1.4em;"}
+        %span.glyphicon.glyphicon-cog{style: "font-size:1.4em;"}
+  - if @activities.present?
+    .row
+      %table.table
+        - @activities.each do |a|
+          %tr
+            %td
+              %h2 #{a.name}
         %tr
           %td
-            %h2 #{a.name}
+            %h2 Sleep
+  - else
+    .row
+      .col-xs-12.text-center
+        %h2 You have no activities!
+        %a{href: new_activity_path}
+          %button.btn.btn-primary.btn-lg.btn-block{:type => "button"} Create one now
 - else
   .row
     .col-xs-12.text-center
-      %h2 You have no activities!
-      %a{href: new_activity_path}
-        %button.btn.btn-primary.btn-lg.btn-block{:type => "button"} Create one now
+      %h2 Timeblocks
+      %a{href: new_user_session_path}
+        %button.btn.btn-primary.btn-lg.btn-block{:type => "button"} Sign In
+      %a{href: new_user_registration_path}
+        %button.btn.btn-default.btn-lg.btn-block{:type => "button"} Sign Up
+
+
+
+
