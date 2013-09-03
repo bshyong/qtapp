@@ -2,9 +2,11 @@
   .row
     .col-xs-12
       %p.text-right{style: "padding-top:5px;"}
+        = link_to 'Logout', destroy_user_session_path, :method=>'delete'
         %a{href: new_activity_path}
           %span.glyphicon.glyphicon-plus-sign{style: "font-size:1.4em;"}
-        %span.glyphicon.glyphicon-cog{style: "font-size:1.4em;"}
+        %a{href: settings_path}
+          %span.glyphicon.glyphicon-cog{style: "font-size:1.4em;"}
   - if @activities.present?
     .row
       %table.table

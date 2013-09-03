@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130831153543) do
+ActiveRecord::Schema.define(version: 20130903015151) do
 
   create_table "activities", force: true do |t|
     t.string   "name"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20130831153543) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "activities", ["creator_id"], name: "index_activities_on_creator_id"
 
   create_table "activities_users", id: false, force: true do |t|
     t.integer  "activity_id"
@@ -48,7 +50,13 @@ ActiveRecord::Schema.define(version: 20130831153543) do
     t.integer  "duration"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "activity_id"
   end
+
+  add_index "timeblocks", ["activity_id"], name: "index_timeblocks_on_activity_id"
+  add_index "timeblocks", ["created_at"], name: "index_timeblocks_on_created_at"
+  add_index "timeblocks", ["updated_at"], name: "index_timeblocks_on_updated_at"
+  add_index "timeblocks", ["user_id"], name: "index_timeblocks_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
