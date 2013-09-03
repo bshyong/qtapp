@@ -1,6 +1,5 @@
 class PagesController < ApplicationController
   def index
-    @users = User.all
-    @activities = current_user.activities
+    @activities = current_user.try(:activities)
   end
 end
