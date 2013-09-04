@@ -17,7 +17,7 @@
 .color5{
   background:#d9534f;
 }
-h4{
+h2, h4{
   color: rgb(62, 62, 63);
 }
 .glyphicon{
@@ -26,6 +26,20 @@ h4{
 }
 tr{
   background-color: rgb(35, 31, 32);
+  span.duration{
+    display:none;
+  }
+}
+tr.active {
+  h2{
+    color:#fff !important;
+  }
+  td{
+    background-color: rgb(62, 62, 63) !important;
+  }
+  span.duration{
+    display:inline;
+  }
 }
 td{
   border-top: 1px solid #333 !important;

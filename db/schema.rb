@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130903015151) do
+ActiveRecord::Schema.define(version: 20130904061126) do
 
   create_table "activities", force: true do |t|
     t.string   "name"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20130903015151) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "activity_id"
+    t.integer  "last_duration", default: 0
   end
 
   add_index "timeblocks", ["activity_id"], name: "index_timeblocks_on_activity_id"

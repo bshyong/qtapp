@@ -1,5 +1,6 @@
 Timeblocks::Application.routes.draw do
-  get "timeblocks/index"
+  get "/start(/:id)" => "timeblocks#start", as: "start_activity"
+  get "/stop(/:id)" => "timeblocks#stop", as: "stop_activity"
   resources :activities
   get "/settings" => "pages#settings", as: "settings"
   root :to => "pages#index"

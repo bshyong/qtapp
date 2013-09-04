@@ -5,17 +5,8 @@ class Activity < ActiveRecord::Base
   has_many :timeblocks
   validates :name, presence: true
 
-  # For a given user, returns
-  # the total daily duration
-  # for the activity in seconds
-  #
-  # @param user [User] specific user in question
-  # @return [Fixnum] total daily duration in seconds
-  def daily_duration(user)
-    user.timeblocks
-        .where(activity_id: self.id,
-               created_at: (Date.today...Date.today+1))
-        .sum(:duration)
+  def active?(user)
+    !!user.timeblocks.where(activity_id: self.id, endtime: nil).exists?
   end
 
 end
