@@ -1,6 +1,11 @@
 class TimeblocksController < ApplicationController
 
   def start
+    # stop all other activities
+    current_user.timeblocks
+                .where(endtime: nil)
+                .map(&:stop)
+
     duration = params[:duration].blank? ? current_user.daily_activity_duration(params[:id]) : params[:duration]
     current_user.timeblocks << Timeblock.new(activity_id: params[:id], starttime: Time.now, last_duration: duration)
 
@@ -14,9 +19,8 @@ class TimeblocksController < ApplicationController
 
   def stop
     t = current_user.timeblocks
-                .where(created_at: Date.today..Date.today+1,
-                  activity_id: params[:id],
-                  endtime: nil)
+                .where(endtime: nil,
+                       activity_id: params[:id])
                 .first
     t.update_attribute(:endtime, Time.now)
     t.update_column(:last_duration, params[:duration])

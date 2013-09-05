@@ -3,6 +3,10 @@ class Timeblock < ActiveRecord::Base
 
   after_save :calculate_duration, unless: Proc.new{|timeblock| timeblock.endtime.blank? || timeblock.duration.present?}
 
+  def stop
+    self.update_attribute(:endtime, Time.now) if endtime.blank?
+  end
+
   private
 
   def calculate_duration

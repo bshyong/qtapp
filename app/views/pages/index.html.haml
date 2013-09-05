@@ -13,16 +13,25 @@
         - @activities.each do |a|
           %tr{:class => ("active" if a.active?(current_user)), id: a.id}
             %td
-              = link_to (a.active?(current_user) ? stop_activity_path(a) : start_activity_path(a)), remote: true do
+              = link_to (a.active?(current_user) ? stop_activity_path(a) : start_activity_path(a)), remote: true, :"data-start-path" => start_activity_path(a), :"data-stop-path" => stop_activity_path(a) do
                 %h2
                   #{a.name}
-                  %span.pull-right.duration #{current_user.daily_activity_duration(a)}
+                  %span.pull-right #{current_user.daily_activity_duration(a)}
         %tr.active
           %td
             %h2 Sleep
     :javascript
       $(function() {
         return $("a[data-remote]").on("ajax:success", function(e, data, status, xhr) {
+          if(!data.stop){
+            $(this).parents('tr').
+                    siblings().
+                    removeClass("active").
+                    map(function(){
+                      var a = $(this).find('a');
+                      a.attr('href', a.data('start-path'));
+                    });
+          }
           $(this).parents('tr').toggleClass("active");
           $(this).attr('href', data.path + '?duration=' + $(this).find('span.duration').text());
         }).on("ajax:error", function(e, data, status, xhr){
