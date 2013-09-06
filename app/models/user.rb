@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  after_create :create_sleep_activity
+
   # For a given activity, returns
   # the total daily duration
   # for the activity in seconds
@@ -26,6 +28,13 @@ class User < ActiveRecord::Base
                        created_at: (Date.today...Date.today+1),
                        endtime: nil)
                        .first.starttime) rescue 0).to_i
+  end
+
+  private
+
+  def create_sleep_activity
+    a = Activity.find_or_create_by_name("Sleep")
+    self.activities << a unless self.activities.include?(a)
   end
 
 end
