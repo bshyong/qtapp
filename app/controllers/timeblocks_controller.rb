@@ -32,4 +32,8 @@ class TimeblocksController < ApplicationController
     end
   end
 
+  def sleep
+
+  end
+
 end

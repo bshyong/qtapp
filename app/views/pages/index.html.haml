@@ -16,10 +16,12 @@
               = link_to (a.active?(current_user) ? stop_activity_path(a) : start_activity_path(a)), remote: true, :"data-start-path" => start_activity_path(a), :"data-stop-path" => stop_activity_path(a) do
                 %h2
                   #{a.name}
-                  %span.pull-right #{current_user.daily_activity_duration(a)}
-        %tr.active
+                  %span.pull-right.duration{id: "clock#{a.id+1}", :"data-total-time" => current_user.daily_activity_duration(a)} #{current_user.daily_activity_duration(a)}
+        %tr
           %td
-            %h2 Sleep
+            %h2
+              Sleep
+              %span.pull-right.duration{id: "clock0", "data-total-time" => nil} 0:00
     :javascript
       $(function() {
         return $("a[data-remote]").on("ajax:success", function(e, data, status, xhr) {
@@ -29,16 +31,95 @@
                     removeClass("active").
                     map(function(){
                       var a = $(this).find('a');
-                      a.attr('href', a.data('start-path'));
+                      a.attr('href', a.data('start-path') + '?duration=' + a.find('span.duration').data('total-time'));
+                      window[$(this).find('span.duration').attr('id')].stopClock();
                     });
+            window[$(this).find('span.duration').attr('id')].startClock();
+          }
+          else{
+            window[$(this).find('span.duration').attr('id')].stopClock();
           }
           $(this).parents('tr').toggleClass("active");
-          $(this).attr('href', data.path + '?duration=' + $(this).find('span.duration').text());
+          $(this).attr('href', data.path + '?duration=' + $(this).find('span.duration').data('total-time'));
         }).on("ajax:error", function(e, data, status, xhr){
           console.log(data);
           return alert("Something went wrong!");
         });
       });
+
+      function Clock(element, active) {
+        this.element = element;
+        this.minutes = 0;
+        this.seconds = 0;
+        this.totalTime = 0;
+        this.hours = 0;
+        this.active = active;
+      }
+
+      Clock.prototype = {
+        startClock: function() {
+          this.active = true;
+          this.setTimeFromSeconds(this.totalTime);
+          this.element.text(this.formattedTime());
+          this.element.data('total-time', this.totalTime);
+          this.totalTime++;
+          var that = this;
+          this.counter = setTimeout(function(){that.startClock()},1000);
+        },
+        setTimeFromSeconds: function(totalTime){
+          this.seconds = totalTime%60
+          this.minutes = Math.floor((totalTime/60)%60)
+          this.hours = Math.floor(totalTime/3600)
+        },
+        formattedTime: function(){
+          if (this.hours > 0){
+            return this.hours + ":" + this.checkDigits(this.minutes) + ":" + this.checkDigits(this.seconds);
+          }
+          else{
+            return this.minutes + ":" + this.checkDigits(this.seconds);
+          }
+        },
+        checkDigits: function(i) {
+          if (i<10) {
+             i="0" + i;
+          }
+          return i;
+        },
+        stopClock: function() {
+          this.active = false;
+          this.element.text(this.formattedTime());
+          clearTimeout(this.counter);
+        },
+        resetClock: function() {
+          this.element.text("0:00");
+          this.minutes = 0;
+          this.hours = 0;
+          this.seconds = 0;
+          this.totalTime = 0;
+          this.counter = null;
+        }
+      }
+
+      function initClock(element, active) {
+        if(typeof element == 'undefined'){
+          return false;
+        }
+        ele = element.attr('id');
+        window[ele] = new Clock(element, active);
+        window[ele].totalTime = parseInt(element.text(), 10);
+        window[ele].setTimeFromSeconds(window[ele].totalTime);
+        if(active){
+          window[ele].startClock();
+        }
+        else{
+          window[ele].stopClock();
+        }
+      }
+      window.onload = function() {
+        $('span.duration').map(function(){
+          initClock($(this), $(this).parents('tr').hasClass('active'));
+        });
+      }
 
   - else
     .row
