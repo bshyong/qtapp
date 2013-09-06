@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130904061126) do
+ActiveRecord::Schema.define(version: 20130906150140) do
 
   create_table "activities", force: true do |t|
     t.string   "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20130904061126) do
   end
 
   add_index "activities", ["creator_id"], name: "index_activities_on_creator_id"
+  add_index "activities", ["name"], name: "index_activities_on_name", unique: true
 
   create_table "activities_users", id: false, force: true do |t|
     t.integer  "activity_id"
