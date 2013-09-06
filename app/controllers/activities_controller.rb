@@ -27,12 +27,12 @@ class ActivitiesController < ApplicationController
   # POST /activities
   # POST /activities.json
   def create
-    @activity = Activity.new(activity_params)
-    @activity.creator = current_user
+    @activity = Activity.find_or_create_by_name(activity_params[:name])
+    @activity.creator = current_user if @activity.creator_id.blank?
 
     respond_to do |format|
       if @activity.save
-        current_user.activities << @activity
+        current_user.activities << @activity unless current_user.activities.include?(@activity)
         format.html { redirect_to @activity, notice: 'Activity was successfully created.' }
         format.json { render action: 'show', status: :created, location: @activity }
       else
