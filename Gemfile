@@ -14,9 +14,10 @@ gem 'rolify'
 gem 'sendgrid'
 gem 'simple_form', '>= 3.0.0.rc'
 gem 'thin'
+gem 'sqlite3', group: [:development, :test]
+gem 'pg', group: [:production]
 
 group :development do
-  gem 'sqlite3'
   gem 'guard-bundler'
   gem 'guard-rails'
   gem 'html2haml'
