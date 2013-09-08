@@ -33,7 +33,7 @@ class ActivitiesController < ApplicationController
     respond_to do |format|
       if @activity.save
         current_user.activities << @activity unless current_user.activities.include?(@activity)
-        format.html { redirect_to root_path, notice: 'Activity was successfully created.' }
+        format.html { redirect_to root_url, notice: 'Activity was successfully created.' }
         format.json { render action: 'show', status: :created, location: @activity }
       else
         format.html { render action: 'new' }
@@ -61,7 +61,7 @@ class ActivitiesController < ApplicationController
   def destroy
     @activity.destroy
     respond_to do |format|
-      format.html { redirect_to activities_url }
+      format.html { redirect_to root_url }
       format.json { head :no_content }
     end
   end
