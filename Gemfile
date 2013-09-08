@@ -15,7 +15,6 @@ gem 'sendgrid'
 gem 'simple_form', '>= 3.0.0.rc'
 gem 'thin'
 
-
 group :development do
   gem 'sqlite3'
   gem 'guard-bundler'
