@@ -16,6 +16,7 @@ gem 'simple_form', '>= 3.0.0.rc'
 gem 'thin'
 gem 'sqlite3', group: [:development, :test]
 gem 'pg', group: [:production]
+gem 'rails_12factor'
 
 group :development do
   gem 'guard-bundler'
