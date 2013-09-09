@@ -21,13 +21,13 @@ class User < ActiveRecord::Base
   def daily_activity_duration(activity)
     self.timeblocks
         .where(activity_id: activity,
-               created_at: (Date.today...Date.today+1))
+               created_at: (Date.today...Date.today+2))
         .sum(:duration) +
     ((Time.now - self.timeblocks
                        .where(activity_id: activity,
-                       created_at: (Date.today...Date.today+1),
+                       created_at: (Date.today...Date.today+2),
                        endtime: nil)
-                       .first.starttime) rescue 0).to_i
+                       .first.starttime rescue 0)).to_i
   end
 
   private
