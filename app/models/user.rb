@@ -19,15 +19,18 @@ class User < ActiveRecord::Base
   # @param activity [Activity] specific user in question
   # @return [Fixnum] total daily duration in seconds
   def daily_activity_duration(activity)
-    self.timeblocks
-        .where(activity_id: activity,
-               created_at: (Date.today...Date.today+2))
+    self.timeblocks_today
+        .where(activity_id: activity)
         .sum(:duration) +
-    ((Time.now - self.timeblocks
+    ((Time.now - self.timeblocks_today
                        .where(activity_id: activity,
-                       created_at: (Date.today...Date.today+2),
-                       endtime: nil)
+                              endtime: nil)
                        .first.starttime rescue 0)).to_i
+  end
+
+  def timeblocks_today
+    self.timeblocks
+        .where(created_at: (Date.today...Date.today+2))
   end
 
   private

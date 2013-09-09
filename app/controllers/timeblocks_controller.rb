@@ -32,8 +32,11 @@ class TimeblocksController < ApplicationController
     end
   end
 
-  def sleep
-
+  def reset
+    current_user.timeblocks_today.map(&:destroy)
+    respond_to do |format|
+      format.html { redirect_to root_url, notice: "All activities reset!"}
+    end
   end
 
 end

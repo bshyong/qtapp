@@ -2,12 +2,14 @@
   .row
     .col-xs-12{style: "padding-top:10px;color:#fff"}
       %p.text-left.pull-left
-        = link_to 'Logout', destroy_user_session_path, :method=>'delete', title: "Logout"
+        = link_to 'Logout', destroy_user_session_path, :method =>'delete', title: "Logout"
       %p.text-right.pull-right
         %a{href: new_activity_path, title: "Add an activity"}
           %span.glyphicon.glyphicon-plus-sign{style: "font-size:1.4em;"}
         %a{href: settings_path, title: "Change your settings"}
           %span.glyphicon.glyphicon-cog{style: "font-size:1.4em;"}
+        = link_to reset_activities_path, title: "Reset your activities", data: {confirm: "Are you sure you want to reset all of your activities for today?", "no-turbolink" => nil} do
+          %span.glyphicon.glyphicon-refresh{style: "font-size:1.4em;"}
   - if @activities.present?
     .row
       %table.table
