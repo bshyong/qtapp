@@ -15,7 +15,7 @@
       %table.table
         - @activities.each do |a|
           %tr{:class => ("active" if a.active?(current_user)), id: a.id}
-            %td
+            %td{id: "row#{a.id}"}
               = link_to (a.active?(current_user) ? stop_activity_path(a) : start_activity_path(a)), remote: true, :"data-start-path" => start_activity_path(a), :"data-stop-path" => stop_activity_path(a) do
                 %h2
                   #{a.name}
@@ -147,22 +147,22 @@
       }());
 
       var HorizontalSwipe = (function() {
-              function Main(container, slidebox, slidebox_icon, handler) {
+              function Main(container, slidingrow, handler) {
                   var self = this;
 
                   this.breakpoint = 80;
 
                   this.container = container;
-                  this.slidebox = slidebox;
-                  this.slidebox_icon = slidebox_icon;
+                  this.slidingrow = slidingrow;
                   this.handler = handler;
 
                   this._slidedown_height = 0;
                   this._anim = null;
-                  this._dragged_down = false;
+                  this._dragged_left = false;
+                  this._dragged_right = false;
 
-                  this.hammertime = Hammer(this.container)
-                      .on("touch dragdown release", function(ev) {
+                  this.hammertime = Hammer(this.slidingrow)
+                      .on("touch tap drag swipe release", function(ev) {
                           self.handleHammer(ev);
                       });
               };
@@ -178,10 +178,23 @@
                   switch(ev.type) {
                       // reset element on start
                       case 'touch':
-                          this.hide();
-                          break;
+                        console.log('touch event');
+                        break;
+
+                      case 'drag':
+                        console.log('drag event');
+                        break;
+
+                      // use tap event to stop and start clock
+                      case 'tap':
+                        console.log('tap event');
+                        break;
 
                       // on release we check how far we dragged
+                      case 'swipe':
+                          console.log(ev.gesture.deltaX);
+                          break;
+
                       case 'release':
                           if(!this._dragged_down) {
                               return;
@@ -191,16 +204,17 @@
                           cancelAnimationFrame(this._anim);
 
                           // over the breakpoint, trigger the callback
-                          if(ev.gesture.deltaY >= this.breakpoint) {
-                              container_el.className = 'pullrefresh-loading';
-                              pullrefresh_icon_el.className = 'icon loading';
+                          if(ev.gesture.deltaX >= this.breakpoint) {
+                            alert('swiped past breakpoint');
+                            //  container_el.className = 'pullrefresh-loading';
+                            //  pullrefresh_icon_el.className = 'icon loading';
 
-                              this.setHeight(60);
-                              this.handler.call(this);
+                            //  this.setHeight(60);
+                            //  this.handler.call(this);
                           }
                           // just hide it
                           else {
-                              pullrefresh_el.className = 'slideup';
+                              row_el.className = 'slideup';
                               container_el.className = 'pullrefresh-slideup';
 
                               this.hide();
@@ -280,7 +294,7 @@
                   var self = this;
                   cancelAnimationFrame(this._anim);
 
-                  pullrefresh_el.className = 'slideup';
+                  row_el.className = 'slideup';
                   container_el.className = 'pullrefresh-slideup';
 
                   this.setHeight(0);
@@ -320,15 +334,13 @@
             return document.getElementById(id);
           }
 
-          var container_el = getEl('container');
-          var pullrefresh_el = getEl('pullrefresh');
-          var pullrefresh_icon_el = getEl('pullrefresh-icon');
-          var image_el = getEl('random-image');
-
-          var refresh = new HorizontalSwipe(container_el, pullrefresh_el, pullrefresh_icon_el);
+          var container_el = getEl('11');
+          var row_el = getEl('row11');
+          var refresh = new HorizontalSwipe(container_el, row_el);
 
           // update image onrefresh
           refresh.handler = function() {
+              console.log("handler called");
               var self = this;
               // a small timeout to demo the loading state
               setTimeout(function() {
