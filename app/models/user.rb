@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
   def timeblocks_today
     self.timeblocks
-        .where(created_at: (Date.today...Date.today+2))
+        .where(created_at: (Date.today..Date.today+2))
   end
 
   private
