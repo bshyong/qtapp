@@ -16,7 +16,9 @@ angular.module('starter', ['ionic', 'Devise', 'directory.controllers'])
     }
   });
 })
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, AuthProvider) {
+
+      AuthProvider.loginPath('http://localhost:3000/users/sign_in');
 
       // Ionic uses AngularUI Router which uses the concept of states
       // Learn more here: https://github.com/angular-ui/ui-router
